@@ -11,3 +11,7 @@ Use the model on roblox. Place the module somwehere in StarterGui. From there yo
 
 ## Documentation
 For now you can find information about functions in the "coreVNHandler" script and the "vnEngineModule".
+
+## Preview
+A recreation of a scene from my favorite visual novel, Rewrite.
+![image](https://github.com/haiku-balls/roblox_visualNovel/assets/65756037/c496d48b-9e5d-4038-bc4e-3622f2d5d44a)
