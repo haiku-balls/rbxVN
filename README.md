@@ -1,6 +1,6 @@
 # Haiku's Visual Novel Engine
 A roblox module that allows you to create a Visual Novel experience in Roblox.
-Currently features BGM handling, sprite handling, subject handling and a friendly dialogue scripting system!
+Currently features voice lines support, BGM handling, sprite handling, subject handling and a friendly dialogue scripting system!
 
 ## Planned Features
 - Transition effects between scenes.
