@@ -15,3 +15,5 @@ For now you can find information about functions in the "coreVNHandler" script a
 ## Preview
 A recreation of a scene from my favorite visual novel, Rewrite.
 ![image](https://github.com/haiku-balls/roblox_visualNovel/assets/65756037/c496d48b-9e5d-4038-bc4e-3622f2d5d44a)
+![image](https://github.com/haiku-balls/roblox_visualNovel/assets/65756037/a27f2a48-efb7-4c92-b0cd-e51f903c9f08)
+
