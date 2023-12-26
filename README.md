@@ -7,7 +7,7 @@ Currently features BGM handling, sprite handling, subject handling and a friendl
 - Niche features from Key Visual Novels. (Such as BGM fading when voices are speaking, etc.)
 
 ## Usage
-Use the model on roblox. Place the module somwehere in StarterGui. From there you can open the "coreVNHandler" script, scroll down to the "dialogueScript" function and use it.
+Use the model on roblox. (https://create.roblox.com/marketplace/asset/15754053266) Place the module somwehere in StarterGui. From there you can open the "coreVNHandler" script, scroll down to the "dialogueScript" function and use it.
 
 ## Documentation
 For now you can find information about functions in the "coreVNHandler" script and the "vnEngineModule".
