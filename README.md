@@ -9,6 +9,10 @@ Currently features voice lines support, BGM handling, sprite handling, subject h
 ## Usage
 Use the model on roblox. (https://create.roblox.com/marketplace/asset/15754053266) Place the module somwehere in StarterGui. From there you can open the "coreVNHandler" script, scroll down to the "dialogueScript" function and use it.
 
+## Usage Agreement
+You can use this module in any of your modules. You may not resell this module.
+If you decide to use it in a project, credit me please. :)
+
 ## Documentation
 For now you can find information about functions in the "coreVNHandler" script and the "vnEngineModule".
 
