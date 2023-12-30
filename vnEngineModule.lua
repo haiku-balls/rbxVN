@@ -32,9 +32,9 @@ local vnEngine = {}
 local VA = workspace:WaitForChild('VA')
 local BGM = workspace:WaitForChild('BGM')
 local sprite = workspace:WaitForChild('Sprite')
-local clientSide = script.Parent:WaitForChild('vn').Dialogue
+_G.clientSide = script.Parent:WaitForChild('clannad')
 
-local dialogueFrame = clientSide.main
+local dialogueFrame = _G.clientSide.Dialogue.main
 local dialogueLine = dialogueFrame.dialogueLine
 local subjectLine = dialogueFrame.dialogueSubFrame.subject
 
@@ -59,6 +59,36 @@ local bgmFade = script.Configuration:WaitForChild("bgmFade").Value
 --// This is experiemental!
 --// Constant
 
+local theme = script.Configuration:WaitForChild("theme").Value
+
+local possibleThemes = {"clannad", "narClassic"}
+
+--// Theme Handling
+
+function vnEngine.handleTheming() -- Global since this should be handled in both scripts.
+	
+	-- Enable theme
+	for index, value in ipairs(possibleThemes) do
+		if value == theme then
+			warn('[HVN Debug] Theme selected: '..value)
+			script.Parent:WaitForChild(value).Enabled = true
+			
+			-- Set clientSide global, and update dialogueFrame vars to enable instant reflect.
+			_G.clientSide = script.Parent:WaitForChild(value)
+			dialogueFrame = _G.clientSide.Dialogue.main
+			dialogueLine = dialogueFrame.dialogueLine
+			subjectLine = dialogueFrame.dialogueSubFrame.subject
+			break
+		end
+	end
+	
+	-- Disable others
+	for index = 1, #possibleThemes do
+		if theme ~= possibleThemes[index] then
+			script.Parent:WaitForChild(possibleThemes[index]).Enabled = false
+		end
+	end
+end
 
 -- Play a BGM.
 function vnEngine.BGM(bgmName: string, fadeOut: boolean, fadeIn: boolean, fadeDuration: number)
@@ -109,8 +139,7 @@ function vnEngine.playAudioClip(audioClip)
 	end
 end
 
-function vnEngine.sayDialogue(subject: string, text: string, color: string, voiceName: string, soundFX: string)
-	warn('[HVN Debug] The dialogue module was passed with subject: '..tostring(subject)..' Text: '..tostring(text)..' Color: '..tostring(color)..' VoiceName: '..tostring(voiceName)..' soundFX: '..tostring(soundFX))
+local function subjectColor(subject, text, color)
 	if subject == "nil" or subject == nil then
 		dialogueFrame.dialogueSubFrame.Visible = false
 	else
@@ -121,6 +150,19 @@ function vnEngine.sayDialogue(subject: string, text: string, color: string, voic
 		dialogueLine.Text = defaultRichBegin..text..defaultRichEnd -- ?!
 	else
 		dialogueLine.Text = richTextBegin..color..richTextEnd..text..richTextClose -- ?!
+	end
+end
+
+local function textNarClassic(text) -- Rich text is not supported.
+	dialogueLine.Text = text
+end
+
+function vnEngine.sayDialogue(subject: string, text: string, color: string, voiceName: string, soundFX: string)
+	warn('[HVN Debug] The dialogue module was passed with subject: '..tostring(subject)..' Text: '..tostring(text)..' Color: '..tostring(color)..' VoiceName: '..tostring(voiceName)..' soundFX: '..tostring(soundFX))
+	if theme == 'narClassic' then
+		textNarClassic(text)
+	else
+		subjectColor(subject, text, color)
 	end
 	if soundFX == "nil" or soundFX == nil then -- Not implemented.
 		
@@ -143,31 +185,35 @@ function vnEngine.sayDialogue(subject: string, text: string, color: string, voic
 end
 
 function vnEngine.swapSprite(spriteName: string, tweenType: string)
-	--// Arguments Documentation:
-	
-	-- 1. SpriteName (string; required). The name of the image in your explorer. Just like voice lines.
-	   --// Ex. yoshino_agr
-	-- 2. TweenType (string; required). The type of tween you want.
-	   --// Valid types are "fadeIn"; "fadeOut"; and "swap"
-	   --// "Swap" will seamlessless transition between two sprites. This is inspired from Rewrite, where emotions fade between each other.
-	
-	local tI
-	local tw
-	-- Fade In
-	-- Fade Out
-	-- Swap
-	
-	if tweenType == "fadeIn" then
-		tI = TweenInfo.new(0.25, Enum.EasingStyle.Linear)
-		tw = TS:Create(clientSide.sprite, tI, {ImageTransparency = 0})
-	elseif tweenType == "fadeOut" then
-		tI = TweenInfo.new(0.25, Enum.EasingStyle.Linear)
-		tw = TS:Create(clientSide.sprite, tI, {ImageTransparency = 1})
-	elseif tweenType == "swap" then -- 
-		
+	if theme == 'narClassic' then
+		print('The theme selected doesn\'t support this function.')
+	else
+		--// Arguments Documentation:
+
+		-- 1. SpriteName (string; required). The name of the image in your explorer. Just like voice lines.
+		--// Ex. yoshino_agr
+		-- 2. TweenType (string; required). The type of tween you want.
+		--// Valid types are "fadeIn"; "fadeOut"; and "swap"
+		--// "Swap" will seamlessless transition between two sprites. This is inspired from Rewrite, where emotions fade between each other.
+
+		local tI
+		local tw
+		-- Fade In
+		-- Fade Out
+		-- Swap
+
+		if tweenType == "fadeIn" then
+			tI = TweenInfo.new(0.25, Enum.EasingStyle.Linear)
+			tw = TS:Create(_G.clientSide.Dialogue.sprite, tI, {ImageTransparency = 0})
+		elseif tweenType == "fadeOut" then
+			tI = TweenInfo.new(0.25, Enum.EasingStyle.Linear)
+			tw = TS:Create(_G.clientSide.Dialogue.sprite, tI, {ImageTransparency = 1})
+		elseif tweenType == "swap" then -- 
+
+		end
+		_G.clientSide.Dialogue.sprite.Image = sprite:WaitForChild(spriteName).Image
+		tw:Play()
 	end
-	clientSide.sprite.Image = sprite:WaitForChild(spriteName).Image
-	tw:Play()
 end
 
 -- Plays the advance audio cue.
@@ -184,9 +230,9 @@ end
 function vnEngine.sceneTransition(imageId: string, fade: boolean, fadeDuration: number)
 	if fade then
 		local tI = TweenInfo.new(fadeDuration, Enum.EasingStyle.Linear)
-		local twO = TS:Create(clientSide.BG, tI, {Transparency = 1})
+		local twO = TS:Create(_G.clientSide.BG, tI, {Transparency = 1})
 	elseif not fade then
-		clientSide.BG.Image = "rbxassetid://"..imageId
+		_G.clientSide.BG.Image = "rbxassetid://"..imageId
 	end
 end
 
