@@ -27,21 +27,18 @@ Source is available on Github, along with its documentation.
 //------------------------------------------------------//
 ]]
 
+
 -- Folder refernces (Assets)
 local VA = workspace:WaitForChild('VA')
 local BGM = workspace:WaitForChild('BGM')
 local vnEngine = require(script.Parent)
+
 
 --// Core
 
 -- Services and Modules
 local replicatedStorage = game:GetService('ReplicatedStorage')
 local userInput = game:GetService('UserInputService')
-
--- UI Refernces
-local dialogueFrame = script.Parent.Parent:WaitForChild('vn').Dialogue.main
-local dialogueLine = dialogueFrame.dialogueLine
-local subjectLine = dialogueFrame.dialogueSubFrame.subject
 
 -- Advance Sound Effect
 -- You can put your own soundId in the configuration folder.
@@ -65,6 +62,9 @@ local function inputWait()
 	end
 end
 
+vnEngine.handleTheming() --// Required line for theme support.
+
+
 local function dialogueScript() -- This is where you define lines. You can ommit arguments by replacing it with "nil"
 	-- Arguments Documentation:
 	-- 1. Subject
@@ -83,9 +83,9 @@ local function dialogueScript() -- This is where you define lines. You can ommit
 	inputWait() -- This function is used to handle input. Awful system I know. You must put this between dialogue lines.
 	vnEngine.sayDialogue("nil", "Yoshino Haruhiko -- the only delinquent in our class -- gives me a deadly stare.")
 	inputWait()
-	vnEngine.sayDialogue("Yoshino", [["Tennouji, it's time to duel!"]], "nil", "yoshino_2", "nil")
+	vnEngine.sayDialogue("Yoshino", [["Tennouji, it's time to duel!"]], "nil", "yoshino_2")
 	inputWait()
-	vnEngine.sayDialogue("Kotarou", [["Sorry, but I'm not really into card games..."]], "#ffce53", "nil", "nil")
+	vnEngine.sayDialogue("Kotarou", [["Sorry, but I'm not really into card games..."]], "#ffce53")
 	inputWait()
 end
 
